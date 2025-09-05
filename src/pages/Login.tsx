@@ -9,7 +9,7 @@ import { useAuth } from '../contexts/AuthContext';
 
 export function Login() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, getDefaultRoute } = useAuth();
   const [formData, setFormData] = useState({
     username: '',
     password: ''
@@ -54,9 +54,31 @@ export function Login() {
     try {
       await login(formData.username, formData.password);
       
-      // Check user role for redirect (this will be available in context after login)
-      // Note: We'll need to access the user from context after login completes
-      navigate('/');
+      // Get user role after successful login and redirect accordingly
+      const userJson = localStorage.getItem('edenaffair_user');
+      if (userJson) {
+        try {
+          const user = JSON.parse(userJson);
+          // Redirect based on user role
+          switch (user.role) {
+            case 'admin':
+              navigate('/admin');
+              break;
+            case 'escort':
+              navigate('/dashboard');
+              break;
+            case 'client':
+              navigate('/browse');
+              break;
+            default:
+              navigate('/');
+          }
+        } catch {
+          navigate('/');
+        }
+      } else {
+        navigate('/');
+      }
     } catch (error: any) {
       setErrors({
         general: error.message || 'Login failed. Please check your credentials.'
@@ -65,7 +87,9 @@ export function Login() {
       setIsLoading(false);
     }
   };
-  return <div className="min-h-screen bg-slate-900 text-gray-100 flex flex-col">
+
+  return (
+    <div className="min-h-screen bg-slate-900 text-gray-100 flex flex-col">
       <Header />
       <main className="flex-1 py-12">
         <div className="max-w-md mx-auto px-4">
@@ -95,18 +119,37 @@ export function Login() {
                   Password
                 </label>
                 <div className="relative">
-                  <input id="password" name="password" type={showPassword ? 'text' : 'password'} placeholder="Enter your password" value={formData.password} onChange={handleChange} className={`w-full bg-slate-800 border ${errors.password ? 'border-rose-500' : 'border-slate-700'} rounded-md px-3 py-2 text-gray-200 pr-10 focus:outline-none focus:ring-2 focus:ring-amber-400`} />
-                  <button type="button" className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400" onClick={() => setShowPassword(!showPassword)}>
+                  <input 
+                    id="password" 
+                    name="password" 
+                    type={showPassword ? 'text' : 'password'} 
+                    placeholder="Enter your password" 
+                    value={formData.password} 
+                    onChange={handleChange} 
+                    className={`w-full bg-slate-800 border ${errors.password ? 'border-rose-500' : 'border-slate-700'} rounded-md px-3 py-2 text-gray-200 pr-10 focus:outline-none focus:ring-2 focus:ring-amber-400`} 
+                  />
+                  <button 
+                    type="button" 
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400" 
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
-                {errors.password && <p className="mt-1 text-sm text-rose-500">
+                {errors.password && (
+                  <p className="mt-1 text-sm text-rose-500">
                     {errors.password}
-                  </p>}
+                  </p>
+                )}
               </div>
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center">
-                  <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 text-amber-500 focus:ring-amber-400 border-slate-600 rounded bg-slate-700" />
+                  <input 
+                    id="remember-me" 
+                    name="remember-me" 
+                    type="checkbox" 
+                    className="h-4 w-4 text-amber-500 focus:ring-amber-400 border-slate-600 rounded bg-slate-700" 
+                  />
                   <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-300">
                     Remember me
                   </label>
@@ -213,5 +256,6 @@ export function Login() {
         </div>
       </main>
       <Footer />
-    </div>;
+    </div>
+  );
 }

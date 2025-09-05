@@ -94,6 +94,7 @@ interface AuthContextType extends AuthState {
   updateProfile: (profile: Profile) => void;
   clearError: () => void;
   checkAuth: () => Promise<void>;
+  getDefaultRoute: () => string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -221,6 +222,22 @@ export function AuthProvider({ children }: AuthProviderProps) {
     dispatch({ type: 'CLEAR_ERROR' });
   };
 
+  // Get default route based on user role
+  const getDefaultRoute = (): string => {
+    if (!state.user) return '/';
+    
+    switch (state.user.role) {
+      case 'admin':
+        return '/admin';
+      case 'escort':
+        return '/dashboard';
+      case 'client':
+        return '/browse';
+      default:
+        return '/';
+    }
+  };
+
   const contextValue: AuthContextType = {
     ...state,
     login,
@@ -229,6 +246,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     updateProfile,
     clearError,
     checkAuth,
+    getDefaultRoute,
   };
 
   return (
