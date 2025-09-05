@@ -13,9 +13,10 @@ A modern, secure, and feature-rich web platform for premium escort services in N
 
 ### 💎 Membership Tiers
 - **Silver (Free)**: Basic profile listing with standard visibility
-- **Gold (₦5,000/month)**: Premium placement and advanced features
-- **Diamond (₦10,000/month)**: Top-tier placement with VIP benefits
-- **VIP Profiles**: Premium contact access with additional security
+- **Gold (Free)**: Enhanced profile visibility and basic support
+- **Diamond (₦5,000/month)**: Premium placement with advanced features
+- **Platinum (₦10,000/month)**: Top-tier placement with VIP benefits
+- **Contact Access**: Flat rate of ₦2,000 per profile for all tiers
 
 ### 🔧 Advanced Features
 - **Real-Time Online Status**: Track user availability (Online/Away/Offline)
@@ -192,14 +193,15 @@ edenaffair/
 ### Membership Tiers
 | Tier | Monthly | 6 Months | Yearly | Features |
 |------|---------|----------|--------|----------|
-| **Silver** | Free | Free | Free | Basic listing, ₦10-30k pricing |
-| **Gold** | ₦5,000 | ₦30,000 | ₦100,000 | Premium placement, ₦30-50k pricing |
-| **Diamond** | ₦10,000 | ₦60,000 | ₦120,000 | Top placement, ₦100k+ pricing |
+| **Silver** | Free | Free | Free | Basic listing, contact access ₦2,000 |
+| **Gold** | Free | Free | Free | Enhanced visibility, contact access ₦2,000 |
+| **Diamond** | ₦5,000 | ₦30,000 | ₦50,000 | Premium placement, contact access ₦2,000 |
+| **Platinum** | ₦10,000 | ₦60,000 | ₦100,000 | Top placement, VIP features, contact access ₦2,000 |
 
-### Service Pricing Guidelines
-- **Silver**: Short time ₦10-30k, Day break ₦20-50k
-- **Gold**: Short time ₦30-50k, Day break ₦100-200k  
-- **Diamond**: Short time ₦100k+, Day break ₦200k+
+### Contact Access Pricing
+- **Flat Rate**: ₦2,000 per profile unlock for all membership tiers
+- **Includes**: Phone number, WhatsApp, Telegram, email, and other contact methods
+- **One-time Payment**: No recurring fees for contact access
 
 ## 🌟 Recent Enhancements
 

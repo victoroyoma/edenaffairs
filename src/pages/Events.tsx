@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
-import { Calendar, MapPin, Clock, Users, Filter, Search, ChevronDown } from 'lucide-react';
+import { Calendar, MapPin, Clock, Users, Filter, Search } from 'lucide-react';
 import { Button } from '../components/Button';
 export function Events() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -9,6 +9,20 @@ export function Events() {
   // Sample events data
   const events = [{
     id: 1,
+    title: 'Erotic Exclusive Party',
+    date: '2024-01-15',
+    time: '9:00 PM - 3:00 AM',
+    location: 'Private Villa, Victoria Island',
+    image: 'https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3',
+    description: "An intimate and exclusive adult party for sophisticated individuals. Experience an evening of luxury, sensuality, and connection in a private, elegant setting. Strictly for mature adults only.",
+    attendees: 25,
+    capacity: 40,
+    price: '₦50,000',
+    vipPrice: '₦100,000',
+    categories: ['Exclusive', 'Adult'],
+    isPast: false
+  }, {
+    id: 2,
     title: 'Exclusive Yacht Party',
     date: '2023-12-30',
     time: '8:00 PM - 2:00 AM',
@@ -22,7 +36,7 @@ export function Events() {
     categories: ['Nightlife', 'Luxury'],
     isPast: false
   }, {
-    id: 2,
+    id: 3,
     title: 'Cocktails & Connections',
     date: '2023-12-15',
     time: '7:00 PM - 11:00 PM',
@@ -36,7 +50,7 @@ export function Events() {
     categories: ['Social', 'Drinks'],
     isPast: false
   }, {
-    id: 3,
+    id: 4,
     title: 'Beach Bonfire Soirée',
     date: '2024-01-20',
     time: '6:00 PM - 12:00 AM',

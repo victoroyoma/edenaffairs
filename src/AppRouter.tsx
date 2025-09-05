@@ -9,6 +9,7 @@ import { Blacklisted } from './pages/Blacklisted';
 import { Reviews } from './pages/Reviews';
 import { Testimonials } from './pages/Testimonials';
 import { Events } from './pages/Events';
+import { Videos } from './pages/Videos';
 import { Adverts } from './pages/Adverts';
 import { FAQ } from './pages/FAQ';
 import { Tour } from './pages/Tour';
@@ -29,6 +30,7 @@ export function AppRouter() {
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/videos" element={<Videos />} />
           <Route path="/advertise" element={<Adverts />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/tour" element={<Tour />} />

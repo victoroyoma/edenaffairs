@@ -168,7 +168,7 @@ export function ContactAccessModal({ isOpen, onClose, escort }: ContactAccessMod
                   <span className="font-medium">Secure Payment</span>
                 </div>
                 <p className="text-sm text-gray-300">
-                  Pay ${escort.price} to access contact information and connect directly with {escort.name}.
+                  Pay ₦{escort.price} to access contact information and connect directly with {escort.name}.
                 </p>
               </div>
 
@@ -250,7 +250,7 @@ export function ContactAccessModal({ isOpen, onClose, escort }: ContactAccessMod
               </div>
 
               <Button type="submit" fullWidth size="lg" disabled={isLoading}>
-                Pay ${escort.price} to Access Contact
+                Pay ₦{escort.price} to Access Contact
               </Button>
             </form>
           )}

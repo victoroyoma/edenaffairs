@@ -25,50 +25,49 @@ export function SubscriptionPlans({ currentTier = 'basic', onUpgrade, className 
 
   const subscriptionTiers: SubscriptionTier[] = [
     {
-      id: 'basic',
-      name: 'Basic',
-      price: billingCycle === 'monthly' ? 5000 : 50000,
-      duration: billingCycle === 'monthly' ? 'per month' : 'per year',
+      id: 'gold',
+      name: 'Gold',
+      price: 0,
+      duration: 'free',
       features: [
         'Basic profile listing',
-        'Standard photo gallery (5 photos)',
-        'Contact form access',
+        'Standard photo gallery (8 photos)',
         'Basic search visibility',
-        'Email support'
+        'Email support',
+        'Contact access: ₦2,000 per profile'
       ],
-      badge: 'Standard',
-      color: 'from-gray-500 to-gray-600',
+      badge: 'Free',
+      color: 'from-yellow-500 to-yellow-600',
       icon: <Users size={24} />
     },
     {
-      id: 'premium',
-      name: 'Premium',
-      price: billingCycle === 'monthly' ? 15000 : 150000,
+      id: 'diamond',
+      name: 'Diamond',
+      price: billingCycle === 'monthly' ? 5000 : 50000,
       duration: billingCycle === 'monthly' ? 'per month' : 'per year',
       features: [
         'Featured profile placement',
         'Extended photo gallery (15 photos)',
-        'Direct contact information access',
-        'Priority search ranking',
+        'Enhanced search ranking',
         'Advanced profile customization',
         'Analytics dashboard',
         'Priority customer support',
-        'Verification badge'
+        'Verification badge',
+        'Contact access: ₦2,000 per profile'
       ],
       badge: 'Most Popular',
-      color: 'from-amber-500 to-orange-500',
-      icon: <Crown size={24} />,
+      color: 'from-blue-500 to-cyan-500',
+      icon: <Diamond size={24} />,
       popular: true
     },
     {
       id: 'platinum',
       name: 'Platinum',
-      price: billingCycle === 'monthly' ? 30000 : 300000,
+      price: billingCycle === 'monthly' ? 10000 : 100000,
       duration: billingCycle === 'monthly' ? 'per month' : 'per year',
       features: [
         'Top-tier featured placement',
         'Unlimited photo gallery',
-        'Premium contact options',
         'Maximum search visibility',
         'Custom profile themes',
         'Advanced analytics & insights',
@@ -76,11 +75,12 @@ export function SubscriptionPlans({ currentTier = 'basic', onUpgrade, className 
         'Premium verification',
         'Social media integration',
         'Exclusive promotional opportunities',
-        'Personal account manager'
+        'Personal account manager',
+        'Contact access: ₦2,000 per profile'
       ],
       badge: 'Elite',
       color: 'from-purple-500 to-pink-500',
-      icon: <Diamond size={24} />
+      icon: <Crown size={24} />
     }
   ];
 
@@ -97,7 +97,7 @@ export function SubscriptionPlans({ currentTier = 'basic', onUpgrade, className 
   };
 
   const canUpgradeTo = (tierId: string) => {
-    const tierLevels = { basic: 0, premium: 1, platinum: 2 };
+    const tierLevels = { gold: 0, diamond: 1, platinum: 2 };
     return tierLevels[tierId as keyof typeof tierLevels] > tierLevels[currentTier as keyof typeof tierLevels];
   };
 

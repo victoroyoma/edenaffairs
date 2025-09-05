@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { ChevronDown, ChevronUp, Search, MessageCircle } from 'lucide-react';
@@ -52,7 +52,7 @@ export function FAQ() {
     questions: [{
       id: 7,
       question: 'How does payment work?',
-      answer: 'To access contact details of a profile, you need to pay a one-time unlock fee. This fee varies based on whether the profile is standard or VIP. Payments can be made via credit/debit cards, bank transfers, or mobile money. All transactions are secure and encrypted.'
+      answer: 'To access contact details of a profile, you need to pay a flat one-time unlock fee of ₦2,000 regardless of your membership tier. Payments can be made via credit/debit cards, bank transfers, or mobile money. All transactions are secure and encrypted.'
     }, {
       id: 8,
       question: "What's included in the contact unlock fee?",

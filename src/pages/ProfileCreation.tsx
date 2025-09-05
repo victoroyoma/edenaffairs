@@ -145,9 +145,10 @@ export function ProfileCreation() {
   const locations = ['Lagos', 'Abuja', 'Port Harcourt', 'Ibadan', 'Kano', 'Kaduna', 'Enugu', 'Benin City', 'Calabar', 'Warri'];
   
   const membershipBenefits = {
-    silver: ['Free registration', 'Short time: ₦10,000 - ₦30,000', 'Day break: ₦20,000 - ₦50,000', 'Basic profile visibility'],
-    gold: ['Premium placement in search results', 'Short time: ₦30,000 - ₦50,000', 'Day break: ₦100,000 - ₦200,000', 'Featured profile badge', 'Priority customer support'],
-    diamond: ['Top placement in all searches', 'Short time: ₦100,000+', 'Day break: ₦200,000+', 'VIP badge and exclusive features', 'Dedicated account manager', 'Premium verification badge']
+    silver: ['Free registration', 'Basic profile visibility', 'Contact access: ₦2,000 per unlock'],
+    gold: ['Free membership', 'Enhanced profile visibility', 'Contact access: ₦2,000 per unlock', 'Basic support'],
+    diamond: ['Premium placement in search results', 'Featured profile badge', 'Priority customer support', 'Contact access: ₦2,000 per unlock', 'Analytics dashboard'],
+    platinum: ['Top placement in all searches', 'VIP badge and exclusive features', 'Dedicated account manager', 'Premium verification badge', 'Contact access: ₦2,000 per unlock', 'Advanced analytics', 'Custom profile themes']
   };
   // Get price range based on membership tier
   const getPriceRange = (tier: string, serviceType: 'shortTime' | 'dayBreak') => {

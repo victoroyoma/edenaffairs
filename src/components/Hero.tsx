@@ -66,6 +66,13 @@ export function Hero() {
             >
               Join as an Escort
             </Button>
+            <Button 
+              variant="primary" 
+              size="xl"
+              onClick={() => navigate('/videos')}
+            >
+              Watch Exciting Videos
+            </Button>
           </div>
 
           {/* Enhanced Search Section */}
