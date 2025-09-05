@@ -1,4 +1,4 @@
-import { apiClient, ApiResponse, User, Profile } from './api';
+import { ApiResponse, User, Profile } from './api';
 
 // Admin dashboard stats
 export interface AdminStats {
@@ -188,9 +188,6 @@ const DEMO_PROFILES: Profile[] = [
   }
 ];
 
-// Demo mode flag - set to true for demo mode
-const DEMO_MODE = true;
-
 // User management types
 export interface UserFilters {
   page?: number;
@@ -245,162 +242,248 @@ export interface UpdateProfileMembershipRequest {
   isVip: boolean;
 }
 
-// Admin Service
-export class AdminService {
+// Demo Admin Service
+export class DemoAdminService {
   // Get dashboard statistics
   static async getStats(): Promise<ApiResponse<AdminStats>> {
-    try {
-      return await apiClient.get<AdminStats>('/admin/stats');
-    } catch (error) {
-      throw new Error(error instanceof Error ? error.message : 'Failed to fetch admin stats');
-    }
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    const statsWithProfiles = {
+      ...DEMO_ADMIN_STATS,
+      popularProfiles: DEMO_PROFILES.slice(0, 3)
+    };
+    
+    return {
+      success: true,
+      data: statsWithProfiles,
+      message: 'Admin stats retrieved successfully'
+    };
   }
 
   // User Management
   static async getUsers(filters: UserFilters = {}): Promise<ApiResponse<UsersResponse>> {
-    try {
-      const params = new URLSearchParams();
-      
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== null && value !== '') {
-          params.append(key, value.toString());
-        }
-      });
-
-      const queryString = params.toString();
-      const endpoint = queryString ? `/admin/users?${queryString}` : '/admin/users';
-      
-      return await apiClient.get<UsersResponse>(endpoint);
-    } catch (error) {
-      throw new Error(error instanceof Error ? error.message : 'Failed to fetch users');
+    await new Promise(resolve => setTimeout(resolve, 600));
+    
+    let filteredUsers = DEMO_USERS;
+    if (filters.role) {
+      filteredUsers = DEMO_USERS.filter(user => user.role === filters.role);
     }
+    
+    return {
+      success: true,
+      data: {
+        users: filteredUsers,
+        pagination: {
+          currentPage: filters.page || 1,
+          totalPages: 1,
+          total: filteredUsers.length
+        }
+      },
+      message: 'Users retrieved successfully'
+    };
   }
 
   static async updateUserStatus(userId: string, data: UpdateUserStatusRequest): Promise<ApiResponse<{ user: User }>> {
-    try {
-      return await apiClient.put<{ user: User }>(`/admin/users/${userId}/status`, data);
-    } catch (error) {
-      throw new Error(error instanceof Error ? error.message : 'Failed to update user status');
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    const user = DEMO_USERS.find(u => u.id === userId);
+    if (user) {
+      // Update user status with the provided data
+      Object.assign(user, {
+        isVerified: data.isVerified,
+        // In a real implementation, isActive would be part of the User interface
+      });
+      
+      return {
+        success: true,
+        data: { user },
+        message: `User status updated successfully - Active: ${data.isActive}, Verified: ${data.isVerified}`
+      };
     }
+    
+    return {
+      success: false,
+      message: 'User not found'
+    };
   }
 
   static async deleteUser(userId: string): Promise<ApiResponse<any>> {
-    try {
-      return await apiClient.delete(`/admin/users/${userId}`);
-    } catch (error) {
-      throw new Error(error instanceof Error ? error.message : 'Failed to delete user');
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    const userIndex = DEMO_USERS.findIndex(u => u.id === userId);
+    if (userIndex > -1) {
+      DEMO_USERS.splice(userIndex, 1);
+      
+      return {
+        success: true,
+        data: { message: 'User deleted successfully' },
+        message: 'User deleted successfully'
+      };
     }
+    
+    return {
+      success: false,
+      errors: ['User not found']
+    };
   }
 
   // Profile Management
   static async getProfiles(filters: ProfileFilters = {}): Promise<ApiResponse<ProfilesResponse>> {
-    try {
-      const params = new URLSearchParams();
-      
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== null && value !== '') {
-          params.append(key, value.toString());
-        }
-      });
-
-      const queryString = params.toString();
-      const endpoint = queryString ? `/admin/profiles?${queryString}` : '/admin/profiles';
-      
-      return await apiClient.get<ProfilesResponse>(endpoint);
-    } catch (error) {
-      throw new Error(error instanceof Error ? error.message : 'Failed to fetch profiles');
+    await new Promise(resolve => setTimeout(resolve, 600));
+    
+    let filteredProfiles = DEMO_PROFILES;
+    if (filters.verificationStatus) {
+      if (filters.verificationStatus === 'verified') {
+        filteredProfiles = DEMO_PROFILES.filter(profile => profile.isVerified);
+      } else if (filters.verificationStatus === 'pending') {
+        filteredProfiles = DEMO_PROFILES.filter(profile => !profile.isVerified);
+      }
     }
+    if (filters.isVip !== undefined) {
+      filteredProfiles = filteredProfiles.filter(profile => profile.isVip === filters.isVip);
+    }
+    
+    return {
+      success: true,
+      data: {
+        profiles: filteredProfiles,
+        pagination: {
+          currentPage: filters.page || 1,
+          totalPages: 1,
+          total: filteredProfiles.length
+        }
+      },
+      message: 'Profiles retrieved successfully'
+    };
   }
 
   static async updateProfileVerification(
     profileId: string, 
     data: UpdateProfileVerificationRequest
   ): Promise<ApiResponse<{ profile: Profile }>> {
-    try {
-      return await apiClient.put<{ profile: Profile }>(`/admin/profiles/${profileId}/verification`, data);
-    } catch (error) {
-      throw new Error(error instanceof Error ? error.message : 'Failed to update profile verification');
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    const profile = DEMO_PROFILES.find(p => p.id === profileId);
+    if (profile) {
+      profile.verificationStatus = data.verificationStatus;
+      if (data.verificationStatus === 'approved') {
+        profile.isVerified = true;
+      } else if (data.verificationStatus === 'rejected') {
+        profile.isVerified = false;
+      }
+      
+      return {
+        success: true,
+        data: { profile },
+        message: `Profile ${data.verificationStatus} successfully`
+      };
     }
+    
+    return {
+      success: false,
+      errors: ['Profile not found']
+    };
   }
 
   static async updateProfileMembership(
     profileId: string, 
     data: UpdateProfileMembershipRequest
   ): Promise<ApiResponse<{ profile: Profile }>> {
-    try {
-      return await apiClient.put<{ profile: Profile }>(`/admin/profiles/${profileId}/membership`, data);
-    } catch (error) {
-      throw new Error(error instanceof Error ? error.message : 'Failed to update profile membership');
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    const profile = DEMO_PROFILES.find(p => p.id === profileId);
+    if (profile) {
+      profile.membershipTier = data.membershipTier;
+      profile.isVip = data.isVip;
+      
+      return {
+        success: true,
+        data: { profile },
+        message: 'Profile membership updated successfully'
+      };
     }
+    
+    return {
+      success: false,
+      errors: ['Profile not found']
+    };
   }
 
   // Pending verifications
   static async getPendingVerifications(): Promise<ApiResponse<{ pendingProfiles: Profile[]; count: number }>> {
-    try {
-      return await apiClient.get<{ pendingProfiles: Profile[]; count: number }>('/admin/pending-verifications');
-    } catch (error) {
-      throw new Error(error instanceof Error ? error.message : 'Failed to fetch pending verifications');
-    }
+    await new Promise(resolve => setTimeout(resolve, 600));
+    
+    const pendingProfiles = DEMO_PROFILES.filter(profile => !profile.isVerified);
+    
+    return {
+      success: true,
+      data: { 
+        pendingProfiles,
+        count: pendingProfiles.length
+      },
+      message: 'Pending verifications retrieved successfully'
+    };
   }
 
   // Bulk actions
   static async bulkApproveProfiles(profileIds: string[]): Promise<ApiResponse<any>> {
-    try {
-      const promises = profileIds.map(id => 
-        this.updateProfileVerification(id, { verificationStatus: 'approved' })
-      );
-      
-      await Promise.all(promises);
-      
-      return {
-        success: true,
-        message: `${profileIds.length} profiles approved successfully`
-      };
-    } catch (error) {
-      throw new Error(error instanceof Error ? error.message : 'Bulk approval failed');
-    }
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    profileIds.forEach(id => {
+      const profile = DEMO_PROFILES.find(p => p.id === id);
+      if (profile) {
+        profile.verificationStatus = 'approved';
+        profile.isVerified = true;
+      }
+    });
+    
+    return {
+      success: true,
+      data: { message: `${profileIds.length} profiles approved successfully` },
+      message: `${profileIds.length} profiles approved successfully`
+    };
   }
 
   static async bulkRejectProfiles(profileIds: string[], reason: string): Promise<ApiResponse<any>> {
-    try {
-      const promises = profileIds.map(id => 
-        this.updateProfileVerification(id, { 
-          verificationStatus: 'rejected',
-          rejectionReason: reason 
-        })
-      );
-      
-      await Promise.all(promises);
-      
-      return {
-        success: true,
-        message: `${profileIds.length} profiles rejected successfully`
-      };
-    } catch (error) {
-      throw new Error(error instanceof Error ? error.message : 'Bulk rejection failed');
-    }
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    profileIds.forEach(id => {
+      const profile = DEMO_PROFILES.find(p => p.id === id);
+      if (profile) {
+        profile.verificationStatus = 'rejected';
+        profile.isVerified = false;
+        // In a real implementation, we would store the rejection reason
+        console.log(`Profile ${id} rejected for reason: ${reason}`);
+      }
+    });
+    
+    return {
+      success: true,
+      message: `${profileIds.length} profiles rejected successfully for reason: ${reason}`
+    };
   }
 
   static async bulkUpdateMembership(
     profileIds: string[], 
     membershipData: UpdateProfileMembershipRequest
   ): Promise<ApiResponse<any>> {
-    try {
-      const promises = profileIds.map(id => 
-        this.updateProfileMembership(id, membershipData)
-      );
-      
-      await Promise.all(promises);
-      
-      return {
-        success: true,
-        message: `${profileIds.length} profiles updated successfully`
-      };
-    } catch (error) {
-      throw new Error(error instanceof Error ? error.message : 'Bulk membership update failed');
-    }
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    profileIds.forEach(id => {
+      const profile = DEMO_PROFILES.find(p => p.id === id);
+      if (profile) {
+        profile.membershipTier = membershipData.membershipTier;
+        profile.isVip = membershipData.isVip;
+      }
+    });
+    
+    return {
+      success: true,
+      data: { message: `${profileIds.length} profiles updated successfully` },
+      message: `${profileIds.length} profiles updated successfully`
+    };
   }
 }
 
-// Export as default
-export default AdminService;
+// Export demo service as default
+export default DemoAdminService;

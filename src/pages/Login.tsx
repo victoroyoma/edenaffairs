@@ -126,10 +126,88 @@ export function Login() {
               </Link>
             </p>
           </div>
+          
+          {/* Demo Credentials */}
+          <div className="mt-6 bg-slate-800 rounded-xl p-6 border border-slate-700">
+            <h2 className="text-lg font-semibold mb-4 text-white text-center">
+              🎯 Demo Login Credentials
+            </h2>
+            <div className="space-y-4">
+              <div className="bg-slate-700 rounded-lg p-4">
+                <h3 className="text-amber-400 font-medium mb-2 flex items-center">
+                  👑 Administrator
+                </h3>
+                <div className="text-sm text-gray-300 space-y-1">
+                  <p><span className="text-gray-400">Username:</span> <code className="bg-slate-600 px-2 py-1 rounded">admin</code></p>
+                  <p><span className="text-gray-400">Password:</span> <code className="bg-slate-600 px-2 py-1 rounded">demo</code></p>
+                  <p className="text-xs text-gray-500 mt-2">Access admin dashboard, user management, and platform analytics</p>
+                </div>
+              </div>
+              
+              <div className="bg-slate-700 rounded-lg p-4">
+                <h3 className="text-pink-400 font-medium mb-2 flex items-center">
+                  💃 Escort (Sophia Lagos)
+                </h3>
+                <div className="text-sm text-gray-300 space-y-1">
+                  <p><span className="text-gray-400">Username:</span> <code className="bg-slate-600 px-2 py-1 rounded">sophia_lagos</code></p>
+                  <p><span className="text-gray-400">Password:</span> <code className="bg-slate-600 px-2 py-1 rounded">demo</code></p>
+                  <p className="text-xs text-gray-500 mt-2">Access escort dashboard, profile management, and earnings</p>
+                </div>
+              </div>
+              
+              <div className="bg-slate-700 rounded-lg p-4">
+                <h3 className="text-blue-400 font-medium mb-2 flex items-center">
+                  👤 Client (John)
+                </h3>
+                <div className="text-sm text-gray-300 space-y-1">
+                  <p><span className="text-gray-400">Username:</span> <code className="bg-slate-600 px-2 py-1 rounded">john_client</code></p>
+                  <p><span className="text-gray-400">Password:</span> <code className="bg-slate-600 px-2 py-1 rounded">demo</code></p>
+                  <p className="text-xs text-gray-500 mt-2">Browse profiles, access premium features, and view bookings</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="mt-4 p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+              <p className="text-amber-300 text-xs text-center mb-3">
+                💡 <strong>Demo Mode:</strong> All data is simulated. No backend required for testing dashboards.
+              </p>
+              
+              {/* Quick Login Buttons */}
+              <div className="flex gap-2 justify-center">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFormData({ username: 'admin', password: 'demo' });
+                  }}
+                  className="px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white text-xs rounded transition-colors"
+                >
+                  Fill Admin
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFormData({ username: 'sophia_lagos', password: 'demo' });
+                  }}
+                  className="px-3 py-1 bg-pink-600 hover:bg-pink-700 text-white text-xs rounded transition-colors"
+                >
+                  Fill Escort
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFormData({ username: 'john_client', password: 'demo' });
+                  }}
+                  className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded transition-colors"
+                >
+                  Fill Client
+                </button>
+              </div>
+            </div>
+          </div>
+          
           <div className="mt-4 text-center">
             <p className="text-xs text-gray-500">
-              For demo purposes: Use username "admin" to access the admin
-              dashboard
+              By signing in, you agree to our Terms of Service and Privacy Policy
             </p>
           </div>
         </div>

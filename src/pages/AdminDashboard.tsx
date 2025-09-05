@@ -10,6 +10,7 @@ import { AdminNotificationCenter } from '../components/AdminNotificationCenter';
 import { AdminProfileFilters } from '../components/AdminProfileFilters';
 import { AdminBulkActions } from '../components/AdminBulkActions';
 import { Button } from '../components/Button';
+import DemoAdminService from '../services/admin-demo';
 import { Search, RefreshCw, Users, DollarSign, Activity, Bell, Settings, ChevronUp, ChevronDown, BarChart2, Calendar, User, Clock, AlertTriangle, Star, MessageSquare, Image, Plus, Edit, Trash2, Shield, CheckCircle, XCircle, Flag, Calendar as CalendarIcon, MapPin, Eye, X } from 'lucide-react';
 
 // Local types for stricter state inference and better DX
@@ -63,6 +64,29 @@ const makeNotification = (type: NotificationType, title: string, message: string
   read: false
 });
 export function AdminDashboard() {
+  // Admin dashboard stats
+  const [demoStats, setDemoStats] = useState<any>(null);
+  const [isLoadingStats, setIsLoadingStats] = useState(true);
+  
+  // Load admin stats on component mount
+  useEffect(() => {
+    const loadStats = async () => {
+      try {
+        setIsLoadingStats(true);
+        const response = await DemoAdminService.getStats();
+        if (response.success) {
+          setDemoStats(response.data);
+        }
+      } catch (error) {
+        console.error('Failed to load admin stats:', error);
+      } finally {
+        setIsLoadingStats(false);
+      }
+    };
+    
+    loadStats();
+  }, []);
+
   // Sample profile data for admin review
   const [profiles, setProfiles] = useState<AdminProfile[]>([{
     id: 1,
@@ -959,7 +983,7 @@ export function AdminDashboard() {
     return user.status === userFilter;
   });
   // Calculate dashboard statistics
-  const stats = {
+  const localStats = {
     totalProfiles: profiles.length,
     verifiedProfiles: profiles.filter(p => p.isVerified).length,
     pendingProfiles: profiles.filter(p => !p.isVerified).length,
@@ -971,6 +995,20 @@ export function AdminDashboard() {
     activeAds: advertisements.filter(a => a.status === 'active').length,
     blacklistedUsers: users.filter(u => u.isBlacklisted).length
   };
+
+  // Use demo stats if available, otherwise fall back to local calculation
+  const stats = demoStats ? {
+    totalProfiles: demoStats.overview.totalProfiles,
+    verifiedProfiles: demoStats.overview.verifiedProfiles, 
+    pendingProfiles: demoStats.overview.pendingProfiles,
+    totalRevenue: 85000, // Demo revenue
+    successfulTransactions: 42, // Demo transactions
+    activeUsers: demoStats.overview.totalClients, // Clients
+    pendingReviews: 5, // Demo pending reviews
+    publishedEvents: 12, // Demo events
+    activeAds: 8, // Demo ads
+    blacklistedUsers: 3 // Demo blacklisted
+  } : localStats;
   // Calculate daily revenue for chart
   const [dailyRevenue, setDailyRevenue] = useState<{
     date: string;
@@ -1237,9 +1275,17 @@ export function AdminDashboard() {
                 {expandedSections.stats ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
               </button>
             </div>
-            {expandedSections.stats && <>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                  <div className="bg-slate-700/50 p-4 rounded-lg border border-slate-600">
+            {expandedSections.stats && (
+              <>
+                {isLoadingStats ? (
+                  <div className="flex justify-center items-center py-12">
+                    <RefreshCw size={32} className="text-amber-400 animate-spin" />
+                    <span className="ml-3 text-gray-400">Loading dashboard stats...</span>
+                  </div>
+                ) : (
+                  <>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                      <div className="bg-slate-700/50 p-4 rounded-lg border border-slate-600">
                     <div className="flex justify-between items-start">
                       <div>
                         <p className="text-gray-400 text-sm">Total Profiles</p>
@@ -1348,7 +1394,10 @@ export function AdminDashboard() {
                     </span>
                   </div>
                 </div>
-              </>}
+                  </>
+                )}
+              </>
+            )}
           </div>
           {/* Profile Management */}
           {activeTab === 'profiles' && (
